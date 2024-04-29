@@ -87,7 +87,14 @@ linear_growth_output |> multiline
 @bind sample_rate NumberField(0.1:0.1:10)
 
 # ╔═╡ 6f6252e0-37db-411e-9754-70ef27dcc861
-parse_trace(linear_growth_output, sample_rate)
+trace = parse_trace(linear_growth_output, sample_rate)
+
+# ╔═╡ 8902b6a0-49c8-456e-a937-c174618c0a05
+begin
+	plot(xlabel="time")
+	plot!(trace["x"], label="x")
+	plot!(trace["2 * x"], label="2 * x")
+end
 
 # ╔═╡ Cell order:
 # ╠═6d56d6be-0619-11ef-1e0a-b5a701da0fb3
@@ -103,4 +110,5 @@ parse_trace(linear_growth_output, sample_rate)
 # ╠═a32f28b7-1897-4289-92c5-0cfa76ef161a
 # ╠═9bd63b43-aa90-4598-8097-2568081aeb04
 # ╠═6f6252e0-37db-411e-9754-70ef27dcc861
+# ╠═8902b6a0-49c8-456e-a937-c174618c0a05
 # ╠═a904a16d-6e8b-4ad3-a95f-458bebac28a9
