@@ -6,11 +6,11 @@ A small Julia-library for running [UPPAAL](https://uppaal.org/) models and parsi
 
 Make sure this library uses the right binary by calling:
 
-  set_verifyta!("PATH/TO/YOUR/uppaal-5.0.0-linux64/bin/verifyta")
+    set_verifyta!("PATH/TO/YOUR/uppaal-5.0.0-linux64/bin/verifyta")
 
 ### Running a model
 
-Then, consider the example UPPAAL automaton:
+Consider the example UPPAAL automaton:
 
 ![Single location with invariant x' == RATE](https://github.com/AsgerHB/UppaalTraceParser.jl/assets/11016262/e2a67eb2-a301-4866-9009-fe722080bbde)
 
