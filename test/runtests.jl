@@ -1,6 +1,6 @@
 using UppaalTraceParser
 using Test
 
-@testset "UppaalTraceParser.jl" begin
-    # Write your tests here.
-end
+
+include("RunModel.jl")
+include("ParseTrace.jl")

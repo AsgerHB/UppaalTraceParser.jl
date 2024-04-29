@@ -1,0 +1,5 @@
+[deps]
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+PlutoLinks = "0ff47ea0-7a50-410d-8455-4348d5de0420"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+UppaalTraceParser = "efead5c8-b6b4-4609-b5ab-fb5e4849ccb0"

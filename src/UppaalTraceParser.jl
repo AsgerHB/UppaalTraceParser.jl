@@ -1,5 +1,9 @@
 module UppaalTraceParser
 
-# Write your package code here.
+export parse_trace
+include("ParseTrace.jl")
+
+export run_model
+include("RunModel.jl")
 
 end
