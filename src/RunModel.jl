@@ -14,7 +14,7 @@ function set_verifyta!(command)
     verifyta = command
 end
 
-function run_model(model::AbstractString, query::AbstractString, replacements::Dict;  working_dir = mktempdir(), discretization=0.01)
+function run_model(model::AbstractString, query::AbstractString, replacements=Dict();  working_dir = mktempdir(), discretization=0.01)
     if !isfile(model) error("Model not found at $model") end
 
     model′ = joinpath(working_dir, "model.xml")
