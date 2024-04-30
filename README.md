@@ -1,3 +1,6 @@
+[![Build Status](https://github.com/AsgerHB/UppaalTraceParser.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/AsgerHB/UppaalTraceParser.jl/actions/workflows/CI.yml?query=branch%3Amain)
+
+
 # UppaalTraceParser
 
 A small Julia-library for running [UPPAAL](https://uppaal.org/) models and parsing the resulting traces.
