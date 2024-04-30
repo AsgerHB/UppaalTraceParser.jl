@@ -41,10 +41,16 @@ end
 
 
 @testset "run_model" begin
-    linear_growth_model = joinpath(pwd(), "LinearGrowth.xml")
-    linear_growth_output = run_model(linear_growth_model, "simulate[<=10;1] {x, 2*x}", Dict("RATE" => "2;"));
+    verifyta_file = joinpath(homedir(), "opt/uppaal-5.0.0-linux64/bin/verifyta")
+    if isfile(verifyta_file)
+        set_verifyta!(verifyta_file)
+        linear_growth_model = joinpath(pwd(), "LinearGrowth.xml")
+        linear_growth_output = run_model(linear_growth_model, "simulate[<=10;1] {x, 2*x}", Dict("RATE" => "2;"));
 
-    @test occursin("Formula is satisfied.", linear_growth_output)
-    @test occursin("[0]: (0,0) (10,20)", linear_growth_output)
-    @test occursin("[0]: (0,0) (10,40)", linear_growth_output)
+        @test occursin("Formula is satisfied.", linear_growth_output)
+        @test occursin("[0]: (0,0) (10,20)", linear_growth_output)
+        @test occursin("[0]: (0,0) (10,40)", linear_growth_output)
+    else
+        @info "No UPPAAL install found. Skipping the integration test."
+    end
 end
