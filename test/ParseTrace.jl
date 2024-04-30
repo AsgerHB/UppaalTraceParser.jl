@@ -24,10 +24,15 @@ x:
     @test length(observation_names) == 2
 end
 
+@testset "get_number_of_traces" begin
+    @test 1 == UppaalTraceParser.get_number_of_traces(example_output)
+    @test 2 == UppaalTraceParser.get_number_of_traces(example_output*"\n[1]: (0, 0) (10, 50)")
+end
+
 @testset "parse_trace" begin
     sample_rate = 1
-    parse_trace_result = parse_trace(example_output, sample_rate)
+    parse_trace_result = parse_traces(example_output, sample_rate)
 
-    @test parse_trace_result["x"] == 0.0:2:18
-    @test parse_trace_result["2 * x"] == 0.0:4:36
+    @test parse_trace_result[1]["x"] == 0.0:2:18
+    @test parse_trace_result[1]["2 * x"] == 0.0:4:36
 end

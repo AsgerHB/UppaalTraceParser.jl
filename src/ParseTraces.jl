@@ -15,10 +15,26 @@ function parse_pairs(str)
 	[parse_pair(s) for s in split(str, " ") if s != ""]
 end
 
-function get_pairs_for_array(output::String, keyword::String)::Vector{Tuple{Float64, Float64}}
-	re_trace = Regex("\\Q$keyword\\E:\\n\\[0\\]:(?<values>.*)", "m")
-	m = match(re_trace, output)
-	return parse_pairs(m[:values])
+function get_pairs_for_array(output::String, keyword::String, i=0)::Vector{Tuple{Float64, Float64}}
+	right_keyword = false
+	re_keyword = Regex("^\\Q$keyword\\E:")
+	for line in split(output, "\n")
+		if occursin(re_keyword, line)
+			right_keyword = true
+		end
+		if !right_keyword continue end
+		
+		re_values = Regex("\\[$i\\]:(?<values>.*)", "m")
+		m = match(re_values, line)
+		if !isnothing(m)
+			return parse_pairs(m[:values])
+		end
+	end
+	if !right_keyword
+		error("Keyword not found in output: '$keyword.'")
+	else
+		error("Index $i not found for keyword  '$keyword'")
+	end
 end
 
 function value_at_time(trace::T, time::S) where T <: AbstractVector{Tuple{Float64, Float64}} where S <: Number
@@ -55,6 +71,16 @@ function get_observation_names(output::AbstractString)
 	result
 end
 
+function get_number_of_traces(output)
+	highest = 0
+	for line in split(output, "\n")
+		m = match(r"^\[(\d+)\]:", line)
+		if isnothing(m) continue end
+		highest = max(highest, parse(Int64, m[1]))
+	end
+	return highest + 1 # Traces are 0-indexed
+end
+
 """
     parse_trace(output, sample_rate, observations...)
 
@@ -76,12 +102,17 @@ Example:
 
 A sample-rate of 0.5 corresponds to two samples per second, which results in vectors of length 20.
 """
-function parse_trace(output, sample_rate)
-	result = Dict{String, Vector{Float64}}()
+function parse_traces(output, sample_rate)
+	result = Dict{String, Vector{Float64}}[]
 	observations = get_observation_names(output)
-	for keyword in observations
-		trace = get_pairs_for_array(output, keyword)
-		result[keyword] = at_regular_intervals(trace, sample_rate)
+	number_of_traces = get_number_of_traces(output)
+	for i in 1:number_of_traces
+		d = Dict{String, Vector{Float64}}()
+		for keyword in observations
+			trace = get_pairs_for_array(output, keyword, i - 1) # recall: zero-indexed
+			d[keyword] = at_regular_intervals(trace, sample_rate)
+		end
+		push!(result, d)
 	end
 	result
 end

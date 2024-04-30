@@ -52,27 +52,27 @@ end; "This cell opens the working dir (`$working_dir`) in nautilus. If you're no
 @bind linear_growth_model TextField(80, default=joinpath(pwd(), "../test/LinearGrowth.xml"))
 
 # ╔═╡ be297956-aac4-4b60-bd8b-0b40a5b63e3b
-linear_growth_output = run_model(linear_growth_model, "simulate[<=10;1] {x, 2*x}", Dict("RATE" => "2;"); working_dir);
+linear_growth_output = run_model(linear_growth_model, "simulate[<=10;3] {x, 2*x}", Dict("RATE" => "2;"); working_dir);
 
 # ╔═╡ a32f28b7-1897-4289-92c5-0cfa76ef161a
 linear_growth_output |> multiline
 
 # ╔═╡ a904a16d-6e8b-4ad3-a95f-458bebac28a9
-@bind sample_rate NumberField(0.05:0.05:10)
+@bind sample_rate NumberField(0.05:0.05:10, default=0.5)
 
 # ╔═╡ 6f6252e0-37db-411e-9754-70ef27dcc861
-trace = parse_trace(linear_growth_output, sample_rate)
+trace = parse_traces(linear_growth_output, sample_rate)
 
 # ╔═╡ 8902b6a0-49c8-456e-a937-c174618c0a05
 begin
-	scatter(trace["x"], label="x")
-	scatter!(trace["2 * x"], label="2 * x")
+	scatter(trace[1]["x"], label="x")
+	scatter!(trace[1]["2 * x"], label="2 * x")
 end
 
 # ╔═╡ Cell order:
 # ╠═6d56d6be-0619-11ef-1e0a-b5a701da0fb3
-# ╠═7eacc43a-6299-4875-80af-cb4a22ddd41f
 # ╠═7e281c42-9043-4ced-9090-964d41271477
+# ╠═7eacc43a-6299-4875-80af-cb4a22ddd41f
 # ╠═1dd2fe4f-afba-47ed-b676-11da2527bf2c
 # ╟─455ed4dc-6713-4d9a-935d-a8a25e00e743
 # ╟─7bc6b387-79b7-487e-bc4a-9b04ca69874b

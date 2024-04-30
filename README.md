@@ -40,16 +40,16 @@ Say it's saved in a file called "LinearGrowth.xml". We can run any query on this
 
 ### Parsing a Trace
 
-The output of a `simulate` query can be turned into vectors with a specified `sample_rate` between the values. 
-This is done using the `parse_trace` function:
+The output of a `simulate` query can be turned into a list of traces. 
+In this example, the query only produces one trace.
+Each trace is a dictionary mapping variables to vectors of values. 
+The second parameter, `sample_rate`, specifies the time between these values. 
+This is done using the `parse_traces` function:
 
-    julia> parse_trace(output, 1.0)
-    Dict{String, Vector{Float64}} with 2 entries:
-      "2 * x" => [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0]
-      "x"     => [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0]
+    julia> parse_traces(output, 1.0)
+    1-element Vector{Dict{String, Vector{Float64}}}:
+    Dict("2 * x" => [0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0, 28.0, 32.0, 36.0], "x" => [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0])
 
-> [!NOTE]
-> The last sample is omitted. I think sometimes the end of a trace is not a valid state.
 
 > [!NOTE]
 > If the simulate query generates more than one trace (e.g. `simulate[<=10;2] {x}`) only the first trace is parsed. Subsequent traces are ignored.
@@ -84,7 +84,6 @@ Then we can set any rate we like using the `run_model` function:
     [0]: (0,0) (10,20)
     2 * x:
     [0]: (0,0) (10,40)"""
-    julia> parse_trace(output, 1.0)
-    Dict{String, Vector{Float64}} with 2 entries:
-      "2 * x" => [0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0, 28.0, 32.0, 36.0]
-      "x"     => [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0]
+    julia> parse_traces(output, 1.0)
+    1-element Vector{Dict{String, Vector{Float64}}}:
+    Dict("2 * x" => [0.0, 4.0, 8.0, 12.0, 16.0, 20.0, 24.0, 28.0, 32.0, 36.0], "x" => [0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0])
